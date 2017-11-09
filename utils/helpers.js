@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { purple } from './colors'
+import { purple, red, orange, blue, lightPurp, white, pink } from './colors'
 
 export function getDailyReminderValue () {
   return {
@@ -34,7 +34,7 @@ export function getMetricMetaInfo (metric) {
           <View style={[styles.iconContainer, { backgroundColor: red }]}>
             <MaterialIcons
               name='directions-run'
-              color={purple}
+              color={white}
               size={35}
             />
           </View>
@@ -52,7 +52,7 @@ export function getMetricMetaInfo (metric) {
           <View style={[styles.iconContainer, { backgroundColor: orange }]}>
             <MaterialCommunityIcons
               name='bike'
-              color={purple}
+              color={white}
               size={32}
             />
           </View>
@@ -70,7 +70,7 @@ export function getMetricMetaInfo (metric) {
           <View style={[styles.iconContainer, { backgroundColor: blue }]}>
             <MaterialCommunityIcons
               name='swim'
-              color={purple}
+              color={white}
               size={35}
             />
           </View>
@@ -88,7 +88,7 @@ export function getMetricMetaInfo (metric) {
           <View style={[styles.iconContainer, { backgroundColor: lightPurp }]}>
             <FontAwesome
               name='bed'
-              color={purple}
+              color={white}
               size={30}
             />
           </View>
@@ -106,7 +106,7 @@ export function getMetricMetaInfo (metric) {
           <View style={[styles.iconContainer, { backgroundColor: pink }]}>
             <MaterialCommunityIcons
               name='food'
-              color={purple}
+              color={white}
               size={35}
             />
           </View>
