@@ -72,6 +72,12 @@ class AddEntry extends Component {
     sleep: 0,
     eat: 0
   }
+  componentDidMount() {
+    console.log('ganteng')
+    debugger
+    console.log('hihi')
+  }
+  
   increment = (metric) => {
     const { max, step } = getMetricMetaInfo(metric);
 
