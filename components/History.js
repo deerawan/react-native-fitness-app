@@ -7,6 +7,7 @@ import { fetchCalendarResults } from '../utils/api'
 import UdaciFitnessCalendar from 'udacifitness-calendar'
 import { white } from '../utils/colors'
 import DateHeader from './DateHeader'
+import MetricCard from './MetricCard'
 
 const styles = StyleSheet.create({
   item: {
@@ -57,8 +58,8 @@ class History extends Component {
                 {today}
               </Text>
             </View>)
-          : <TouchableOpacity onPress={() => console.log('pressed')}>
-              <Text>{JSON.stringify(metrics)}</Text>
+          : <TouchableOpacity onPress={() => console.log('pressed')}>              
+              <MetricCard date={formattedDate} metrics={metrics} />
             </TouchableOpacity>
       }
     </View>
