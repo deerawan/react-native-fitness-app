@@ -2,15 +2,48 @@ import React, { Component } from 'react';
 import { Text, View, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native'
 import { Foundation } from '@expo/vector-icons'
 import { white, purple } from '../utils/colors'
+import { Location, Permissions } from 'expo'
+import {calculateDirection} from '../utils/helpers'
 
 class Live extends Component {
   state = {
     coords: null,
-    status: 'denied',
+    status: null,
     direction: ''
   }
+  componentDidMount() {
+    Permissions.getAsync(Permissions.LOCATION)
+      .then(({ status }) => {
+        if (status === 'granted') {
+          return this.setLocation()
+        }
+
+        this.setState({ status });
+      })
+      .catch(error => {
+        console.warn('error getting permission: ', error);
+
+        this.setState({ status: 'undetermined' });
+      })
+  }  
   askPermission = () => {
 
+  }
+  setLocation = () => {
+    Location.watchPositionAsync({
+      enableHighAccuracy: true,
+      timeInterval: 1,
+      distanceInterval: 1
+    }, ({coords}) => {
+      const newDirection = calculateDirection(coords.heading)
+      const { direction, bounceValue } = this.state
+
+      this.setState({
+        coords,
+        status: 'granted',
+        direction: newDirection
+      })
+    })
   }
   render() {
     const { coords, status, direction } = this.state;
@@ -48,8 +81,20 @@ class Live extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>Live</Text>
-        <Text>{JSON.stringify(this.state)}</Text>
+        <View style={styles.directionContainer}>
+          <Text style={styles.header}>You're heading</Text>
+          <Text style={styles.direction}>North</Text>
+        </View>
+        <View style={styles.metricContainer}>
+          <View style={styles.metric}>
+            <Text style={[styles.header, {color: white}]}>Altitude</Text>
+            <Text style={[styles.subHeader, {color: white}]}>{200} feet</Text>
+          </View>
+          <View style={styles.metric}>
+            <Text style={[styles.header, {color: white}]}>Speed</Text>
+            <Text style={[styles.subHeader, {color: white}]}>{300} MPH</Text>
+          </View>
+        </View>
       </View>
     )
   }
@@ -77,7 +122,40 @@ const styles = StyleSheet.create({
   buttonText :{
     color: white,
     fontSize: 20,
-  }
+  },
+  directionContainer: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  header: {
+    fontSize: 35,
+    textAlign: 'center',
+  },
+  direction: {
+    color: purple,
+    fontSize: 120,
+    textAlign: 'center',
+  },
+  metricContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: purple,
+  },
+  metric: {
+    flex: 1,
+    paddingTop: 15,
+    paddingBottom: 15,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    marginTop: 20,
+    marginBottom: 20,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  subHeader: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 5,
+  },
 })
 
 export default Live;
