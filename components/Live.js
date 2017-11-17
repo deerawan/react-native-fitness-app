@@ -27,7 +27,15 @@ class Live extends Component {
       })
   }  
   askPermission = () => {
+    Permissions.askAsync(Permissions.LOCATION)
+      .then(({ status }) => {
+        if (status === 'granted') {
+          return this.setLocation()
+        }
 
+        this.setState(() => ({ status }))
+      })
+      .catch((error) => console.warn('error asking Location permission: ', error))
   }
   setLocation = () => {
     Location.watchPositionAsync({
@@ -83,16 +91,16 @@ class Live extends Component {
       <View style={styles.container}>
         <View style={styles.directionContainer}>
           <Text style={styles.header}>You're heading</Text>
-          <Text style={styles.direction}>North</Text>
+          <Text style={styles.direction}>{direction}</Text>
         </View>
         <View style={styles.metricContainer}>
           <View style={styles.metric}>
             <Text style={[styles.header, {color: white}]}>Altitude</Text>
-            <Text style={[styles.subHeader, {color: white}]}>{200} feet</Text>
+            <Text style={[styles.subHeader, {color: white}]}>{Math.round(coords.altitude * 3.2808)} feet</Text>
           </View>
           <View style={styles.metric}>
             <Text style={[styles.header, {color: white}]}>Speed</Text>
-            <Text style={[styles.subHeader, {color: white}]}>{300} MPH</Text>
+            <Text style={[styles.subHeader, {color: white}]}>{(coords.speed * 2.2369).toFixed(1)} MPH</Text>
           </View>
         </View>
       </View>
